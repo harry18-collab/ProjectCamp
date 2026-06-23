@@ -1,0 +1,19 @@
+{
+  "name": "project_management",
+  "version": "1.0.0",
+  "description": "backend project ",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "keywords": [
+    "backend",
+    "API"
+  ],
+  "author": "Harsit Chugh",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "3.8.4"
+  }
+}
