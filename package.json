@@ -1,19 +1,33 @@
 {
-  "name": "project_management",
-  "version": "1.0.0",
-  "description": "backend project ",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "dev": "node index.js"
-  },
-  "keywords": [
-    "backend",
-    "API"
-  ],
-  "author": "Harsit Chugh",
-  "license": "ISC",
-  "devDependencies": {
-    "prettier": "3.8.4"
-  }
+	"name": "project_management",
+	"version": "1.0.0",
+	"description": "backend project ",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"dev": "nodemon src/index.js",
+		"start": " node index.js"
+	},
+	"keywords": [
+		"backend",
+		"API"
+	],
+	"author": "Harsit Chugh",
+	"license": "ISC",
+	"devDependencies": {
+		"nodemon": "^3.1.14",
+		"prettier": "3.8.4"
+	},
+	"dependencies": {
+		"bcrypt": "^6.0.0",
+		"cookie-parser": "^1.4.7",
+		"cors": "^2.8.6",
+		"dotenv": "^17.4.2",
+		"express": "^5.2.1",
+		"express-validator": "^7.3.2",
+		"jsonwebtoken": "^9.0.3",
+		"mailgen": "^2.0.34",
+		"mongoose": "^9.7.2",
+		"nodemailer": "^9.0.1"
+	}
 }
