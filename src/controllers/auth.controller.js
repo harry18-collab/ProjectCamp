@@ -261,6 +261,81 @@ const refreshAccesToken=asyncHandler(async(req,res)=>{
     }
 })
 
+const forgetPassword=asyncHandler(async(req,res)=>{
+    const {email}=req.body
+
+    const user=await User.findOne({email})
+    if(!user){
+        throw new APIError(400,"user does not exists",[]);
+    }
+
+    const {unhashedToken,hashedToken,ExpiryTime}=generateTemproryToken()
+
+    user.forgotPasswordToken=hashedToken
+    user.forgotPasswordExpiry=ExpiryTime
+
+    user.save({validateBeforeSave:false});
+
+    await sendEmail({
+        email:user?.email,
+        subject:"password Reset Request",
+        MailgenContent:PasswordResetMailgenContent(
+            user.username,
+            `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unhashedToken}`,
+        ),
+    })
+
+    return res.status(200).json(
+        new APIResponse(200,{},"password Reset Email has been sent ")
+    )
+
+})
+
+const ResetPassword=asyncHandler(async(req,res)=>{
+    const {resetToken}=req.params;
+    const {newPassword}=req.body;
+
+    let hashedToken=crypto.createHash("sha256").update(resetToken).digest("hex")
+
+    const user=await user.findOne({
+        forgotPasswordToken:hashedToken,
+        forgotPasswordExpiry:{$gt:Date.now()}
+    })
+
+    if(!user){
+        throw new APIError(404,"user does not exist",[]);
+    }
+    user.forgotPasswordExpiry=undefined;
+    user.forgotPasswordToken=undefined;
+
+    user.password=newPassword;
+
+    await user.save({"validateBeforeSave":false})
+
+    return res.status(200).json(
+        new APIResponse(200,{},"password has been updated")
+    )
+})
+
+const ChangeCurrentPassword=asyncHandler(async(req,res)=>{
+    const {oldPassword,newPassword}=req.body
+
+    const user=await user.findOne(req.user?._id) 
+
+    const validPassword=await user.isPasswordCorrect(oldPassword)
+    if(!validPassword){
+        throw new APIError(404,"Invalid password",{});
+    }
+
+    user.password=newPassword;
+    await user.save({"validateBeforeSave":false});
+    
+    return res.status(200).json(
+        new APIResponse(200,{},"password changed Successfully")
+    );
+
+})
+
 export {
     registerUser,
     login,
@@ -268,5 +343,8 @@ export {
     currentUser,
     verifyEmail,
     ResendEmailverification,
-    refreshAccesToken
+    refreshAccesToken,
+    forgetPassword,
+    ResetPassword,
+    ChangeCurrentPassword
 }
