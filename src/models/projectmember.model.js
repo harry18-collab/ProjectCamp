@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import {AvailableUserRoles,UserRolesENUM} from "../Utils/constants.js"
 
 const ProjectMemberSchema=new Schema(
@@ -23,4 +23,4 @@ const ProjectMemberSchema=new Schema(
     {timestamps:true}
 )
 
-export const ProjectMember=moongose.models("ProjectMember",ProjectMemberSchema)
+export const ProjectMember=mongoose.model("ProjectMember",ProjectMemberSchema)
