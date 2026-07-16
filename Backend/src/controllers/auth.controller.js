@@ -4,6 +4,7 @@ import asyncHandler from "../Utils/async-handler.js";
 import {APIError} from "../Utils/API-error.js"
 import {EmailVerificationMailgenContent, sendEmail} from "../Utils/mail.js"
 import { body } from "express-validator";
+import crypto from "crypto";
 import jwt from "jsonwebtoken"
 
 

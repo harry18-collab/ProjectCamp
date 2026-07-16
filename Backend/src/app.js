@@ -25,7 +25,8 @@ import authRouter from "./Routes/auth.router.js";
 app.use("/api/v1/healthcheck",healthcheckrouter);
 app.use("/api/v1/auth",authRouter);
 
-
+import projectRouter from "./Routes/project.router.js"
+app.use("/api/v1/projects",projectRouter);
 
 app.get('/',(req,res)=>{
     res.send("start project");
