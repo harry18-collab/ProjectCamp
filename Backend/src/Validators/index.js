@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { AvailableUserRoles,UserRolesENUM } from "../Utils/constants.js";
+import { AvailableUserRoles,UserRolesENUM,TaskRolesENUM,AvailableTaskStatues} from "../Utils/constants.js";
 const userRegisterValidator=()=>{
     return [
         body("email").trim()
@@ -56,6 +56,24 @@ const addMemberToProjectValidator=()=>{
     ]
 }
 
+
+const CreateTaskValidator=()=>{
+    return [
+        body('title').trim().notEmpty().withMessage("Title is Required"),
+        body('description').optional(),
+        body('assignedTo').notEmpty().withMessage("Assigned User is Required")
+            .isMongoId().withMessage("user id must be Mongo DB ID"),
+        body('status').optional().isIn(AvailableTaskStatues).withMessage("Invalid Task Status")   
+    ]
+}
+
+const UpdateTaskValidator=()=>{
+    return [
+        body('title').trim().notEmpty().withMessage('Title is required'),
+        body('description').optional()
+    ]
+}
+
 export {
     userRegisterValidator,
     LoginValidator,
@@ -63,5 +81,7 @@ export {
     userForgotPasswordValidator,
     userResetForgotPasswordValidator,
     CreateProjectValidator,
-    addMemberToProjectValidator
+    addMemberToProjectValidator,
+    CreateTaskValidator,
+
 }
